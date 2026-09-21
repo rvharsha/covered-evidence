@@ -1,0 +1,71 @@
+[project]
+name = "covered-evidence"
+version = "0.1.0"
+description = "Open evidence format, offline verifier, and Mode B staging contract for child-safety testing of companion chatbots"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Harsha and The Covered Authors" }]
+keywords = ["ai-safety", "child-safety", "companion-chatbot", "evidence", "audit", "verification"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Legal Industry",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+# cryptography verifies asymmetric (KMS-issued) bundle signatures; HMAC needs only the stdlib.
+dependencies = ["cryptography>=50.0.1,<51"]
+
+[project.urls]
+Repository = "https://github.com/rvharsha/covered-evidence"
+Issues = "https://github.com/rvharsha/covered-evidence/issues"
+Changelog = "https://github.com/rvharsha/covered-evidence/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+# Prints a bundle's HTML render to PDF with a bundled Chromium.
+pdf = ["playwright>=1.45,<2"]
+
+[project.scripts]
+covered-verify = "covered_evidence.verify_cli:main"
+
+[dependency-groups]
+dev = ["pytest>=9.0.3,<10", "ruff>=0.6,<1", "mypy>=1.11,<2"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["covered_evidence"]
+
+# the JSON Schema ships inside the wheel, for consumers who never clone the repository
+[tool.hatch.build.targets.wheel.force-include]
+"schemas/evidence-bundle-1.schema.json" = "covered_evidence/schemas/evidence-bundle-1.schema.json"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+xfail_strict = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "N"]
+
+[tool.ruff.lint.per-file-ignores]
+"covered_evidence/bundle/render.py" = ["E501"]
+"samples/**" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["covered_evidence"]

@@ -1,0 +1,30 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: uv python install ${{ matrix.python }}
+      - run: uv sync --locked --all-extras --python ${{ matrix.python }}
+      - run: scripts/check.sh
+      # the release artifacts build, and the verifier works from the wheel alone
+      - run: |
+          uv build
+          uv run --isolated --no-project --with dist/*.whl covered-verify \
+            samples/fernwood-pip/build-1.signed.json \
+            --public-key samples/fernwood-pip/test-public-key.pem
+      # known advisories in the locked dependency set fail the build
+      - run: |
+          uv export --all-extras --no-hashes --no-emit-project -q > /tmp/locked.txt
+          uvx pip-audit -r /tmp/locked.txt --disable-pip --no-deps
