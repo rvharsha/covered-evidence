@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
-authors = [{ name = "Harsha and The Covered Authors" }]
+authors = [{ name = "Harsha Vashisht and The Covered Authors" }]
 keywords = ["ai-safety", "child-safety", "companion-chatbot", "evidence", "audit", "verification"]
 classifiers = [
     "Development Status :: 3 - Alpha",
