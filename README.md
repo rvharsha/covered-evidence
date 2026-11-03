@@ -189,4 +189,5 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SECURITY.md`](SECURITY.md). This 
 accepts restricted-category test content (self-harm, sexual, romantic, or isolation user-side
 text) in code, fixtures, issues, or pull requests; see principle 1.
 
-Apache-2.0. Fernwood Friends, Inc. and its chatbot "Pip" are fictional.
+Licensed under the [Apache License, Version 2.0](LICENSE); see [`NOTICE`](NOTICE). Fernwood
+Friends, Inc. and its chatbot "Pip" are fictional.
